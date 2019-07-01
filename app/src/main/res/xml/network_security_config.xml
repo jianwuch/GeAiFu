@@ -1,0 +1,10 @@
+<network-security-config>
+    <debug-overrides>
+        <trust-anchors>
+            <!-- Trust user added CAs while debuggable only -->
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+    <!-- 9.0以后的系统需要添加这一条支持http网络请求，否则只能支持https -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
