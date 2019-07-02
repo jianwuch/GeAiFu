@@ -1,5 +1,6 @@
 package com.jianwuch.giaifu.module;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -24,6 +25,7 @@ import com.jianwuch.giaifu.module.adapter.SearGifAdapter;
 import com.jianwuch.giaifu.net.DownloadService;
 import com.jianwuch.giaifu.net.GifImagerRequest;
 import com.jianwuch.giaifu.net.RetrofitInstance;
+import com.jianwuch.giaifu.util.LogUtil;
 import com.jianwuch.giaifu.util.ShareFileUtils;
 import com.jianwuch.giaifu.util.ToastUtils;
 import io.reactivex.Observer;
@@ -48,6 +50,7 @@ import okhttp3.ResponseBody;
 public class ItemFragment extends Fragment {
 
     private static final String KEY_SEARCH_NAME = "search_name";
+    private final static String TAG = ItemFragment.class.getSimpleName();
 
     private final static int PAGE_COUNT = 22;
     private int currentPage = 0;
@@ -141,6 +144,7 @@ public class ItemFragment extends Fragment {
                         .map(new Function<ResponseBody, InputStream>() {
                             @Override
                             public InputStream apply(ResponseBody responseBody) throws Exception {
+                                LogUtil.d(TAG, "当先线程1"+Thread.currentThread().getName());
                                 return responseBody.byteStream();
                             }
                         })
@@ -148,6 +152,7 @@ public class ItemFragment extends Fragment {
                         .doOnNext(new Consumer<InputStream>() {
                             @Override
                             public void accept(InputStream inputStream) throws Exception {
+                                LogUtil.d(TAG, "当先线程2"+Thread.currentThread().getName());
                                 String path = getActivity().getExternalFilesDir("gif_files")
                                         .getAbsolutePath();
                                 File saveFile = new File(path + File.separator + title + ".gif");
@@ -166,6 +171,7 @@ public class ItemFragment extends Fragment {
                         .map(new Function<InputStream, File>() {
                             @Override
                             public File apply(InputStream inputStream) throws Exception {
+                                LogUtil.d(TAG, "当先线程3"+Thread.currentThread().getName());
                                 String path = getActivity().getExternalFilesDir("gif_files")
                                         .getAbsolutePath();
 
@@ -177,6 +183,7 @@ public class ItemFragment extends Fragment {
                         .subscribe(new Consumer<File>() {
                             @Override
                             public void accept(File file) throws Exception {
+                                LogUtil.d(TAG, "当先线程4"+Thread.currentThread().getName());
                                 ShareFileUtils.shareImageToWeChat(getActivity(),
                                         file.getAbsolutePath());
                             }

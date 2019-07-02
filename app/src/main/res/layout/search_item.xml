@@ -28,12 +28,13 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintBottom_toBottomOf="@+id/gifImage"
       tools:layout_editor_absoluteY="286dp" />
-  <Button
+  <ImageButton
       android:id="@+id/btnSendToWechat"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="8dp"
-      android:text="微信"
+      android:src="@drawable/ic_wechat"
+      android:background="@android:drawable/list_selector_background"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>
